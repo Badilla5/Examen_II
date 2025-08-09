@@ -6,6 +6,10 @@
     Public Property Direccion As String
     Public Property FechaRegistro As DateTime
 
+    Public Function validarApellido() As Boolean
+        Return Not String.IsNullOrEmpty(Apellido) AndAlso Apellido.Length >= 3 AndAlso Not Apellido.Any(Function(c) Char.IsDigit(c))
+    End Function
+
     Public Sub New(apellido As String, telefono As String, direccion As String, fechaRegistro As Date)
         Me.Apellido = apellido
         Me.Telefono = telefono
@@ -36,12 +40,11 @@
     End Function
 
     Public Function ValidarTelefono() As Boolean
-        Return Not String.IsNullOrEmpty(Telefono) AndAlso Telefono.Length >= 10
+        Return Not String.IsNullOrEmpty(Telefono) AndAlso Telefono.Length >= 8
     End Function
 
-    Public Function ValidarDatos() As Boolean
-        Return Not String.IsNullOrEmpty(Nombre) AndAlso Not String.IsNullOrEmpty(Apellido) AndAlso ValidarTelefono() AndAlso ValidarEmail()
-    End Function
+
+
 
 
 

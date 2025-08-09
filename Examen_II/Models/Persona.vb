@@ -9,6 +9,13 @@
         Return Email.Contains("@") AndAlso Email.Contains(".")
     End Function
 
+    Public Function validarNombre() As Boolean
+        Return Not String.IsNullOrEmpty(Nombre) AndAlso
+                   Nombre.Length >= 3 AndAlso
+                   Not Nombre.Any(Function(c) Char.IsDigit(c))
+    End Function
+
+
 
     Public Function dtToPersona(dataTable As DataTable) As Persona
         If dataTable IsNot Nothing AndAlso dataTable.Rows.Count > 0 Then

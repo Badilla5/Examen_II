@@ -23,30 +23,42 @@ Public Class Clientes1
             .FechaRegistro = DateTime.Now
         }
         Try
-            Dim helper As New DatabaseHelper()
-            Dim query As String = "INSERT INTO Clientes (Nombre, Apellido, Telefono, Email) VALUES (@Nombre, @Apellido, @Telefono, @Email)"
-            Dim parametros As New List(Of SqlParameter) From {
+            If validarDatos(cliente) Then
+                Dim helper As New DatabaseHelper()
+                Dim query As String = "INSERT INTO Clientes (Nombre, Apellido, Telefono, Email) VALUES (@Nombre, @Apellido, @Telefono, @Email)"
+                Dim parametros As New List(Of SqlParameter) From {
                 New SqlParameter("@Nombre", cliente.Nombre),
                 New SqlParameter("@Apellido", cliente.Apellido),
                 New SqlParameter("@Telefono", cliente.Telefono),
                 New SqlParameter("@Email", cliente.Email)
-            }
-            If helper.ExecuteNonQuery(query, parametros) Then
-                LblMensaje.Text = "Cliente guardado exitosamente."
-                LblMensaje.ForeColor = System.Drawing.Color.Green
-                GridView1.DataBind()
-                limpiarCampos()
+                }
+                If helper.ExecuteNonQuery(query, parametros) Then
+                    LblMensaje.Text = "Cliente guardado exitosamente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Green
+                    GridView1.DataBind()
+                    limpiarCampos()
+                Else
+                    LblMensaje.Text = "Error al guardar el cliente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Red
+                End If
             Else
-                LblMensaje.Text = "Error al guardar el cliente."
+                LblMensaje.Text = "Por favor, complete todos los campos correctamente."
                 LblMensaje.ForeColor = System.Drawing.Color.Red
             End If
+
         Catch ex As Exception
             LblMensaje.Text = "Ocurrió un error: " & ex.Message
             LblMensaje.ForeColor = System.Drawing.Color.Red
         End Try
 
     End Sub
-
+    Private Function validarDatos(cliente As Clientes) As Boolean
+        ' Validar que los campos no estén vacíos 
+        If Not cliente.validarNombre() OrElse Not cliente.validarApellido() OrElse Not cliente.ValidarTelefono() OrElse Not cliente.ValidarEmail() Then
+            Return False
+        End If
+        Return True
+    End Function
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs)
         Dim index As Integer = GridView1.SelectedIndex
         Dim clienteId As Integer = Convert.ToInt32(GridView1.DataKeys(index).Value)
@@ -95,5 +107,12 @@ Public Class Clientes1
 
 
 
+    End Sub
+
+    Protected Sub BtnCancelar_Click(sender As Object, e As EventArgs)
+        limpiarCampos()
+        LblMensaje.Text = String.Empty
+        LblMensaje.ForeColor = System.Drawing.Color.Black
+        GridView1.DataBind()
     End Sub
 End Class

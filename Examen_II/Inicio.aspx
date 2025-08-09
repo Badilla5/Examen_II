@@ -26,7 +26,9 @@
             <div class="form-group mb-3">
                 <asp:Button ID="btnGuardar" CssClass="btn btn-primary" runat="server" Text="Guardar" OnClick="btnGuardar_Click" />
             </div>
-
+            <div class="form-group mb-3">
+                <asp:Button ID="BtnCancelar" CssClass="btn btn-primary" runat="server" Text="Cancelar" OnClick="BtnCancelar_Click" />
+            </div>
             </div>
             <asp:Label ID="LblMensaje" runat="server" Text=""></asp:Label>
          <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="ClienteID" DataSourceID="SqlDataSource1"
