@@ -69,6 +69,25 @@ Public Class ClienteRepository
             End Using
         End Using
     End Function
+    ' Método para eliminar un cliente por ID
+    Public Function EliminarCliente(clienteId As Integer) As Boolean
+        If clienteId <= 0 Then
+            Throw New ArgumentException("ID del cliente inválido.")
+        End If
+        Dim query As String = "DELETE FROM Clientes WHERE ClienteID = @ClienteID"
+        Dim parametros As New List(Of SqlParameter) From {
+            New SqlParameter("@ClienteID", clienteId)
+        }
+        Using conn As New SqlConnection(connectionString)
+            Using cmd As New SqlCommand(query, conn)
+                cmd.Parameters.AddRange(parametros.ToArray())
+                conn.Open()
+                Return cmd.ExecuteNonQuery() > 0 ' Retorna True si se eliminó al menos una fila
+            End Using
+        End Using
+    End Function
+    ' Método para obtener todos los clientes
+
 
 
 

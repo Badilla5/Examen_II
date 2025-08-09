@@ -5,9 +5,18 @@ Imports Microsoft.Ajax.Utilities
 Public Class Clientes1
     Inherits System.Web.UI.Page
 
+    Private ReadOnly repo As New ClienteRepository()
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
     End Sub
+    Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
+        If Not IsPostBack Then
+            ' Inicializar el GridView o cualquier otro control necesario
+            GridView1.DataBind()
+        End If
+    End Sub
+
     Protected Sub limpiarCampos()
         TxtNombreCliente.Text = String.Empty
         TxtApellidoCliente.Text = String.Empty
@@ -17,52 +26,49 @@ Public Class Clientes1
     End Sub
 
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs)
-        Dim cliente As New Clientes()
-        cliente.Nombre = TxtNombreCliente.Text.Trim()
-        cliente.Apellido = TxtApellidoCliente.Text.Trim()
-        cliente.Telefono = TxtTelefono.Text.Trim()
-        cliente.Email = txtEmail.Text.Trim()
+        Dim cliente As New Clientes() With {
+            .Nombre = TxtNombreCliente.Text.Trim(),
+            .Apellido = TxtApellidoCliente.Text.Trim(),
+            .Telefono = TxtTelefono.Text.Trim(),
+            .Email = txtEmail.Text.Trim()
+        }
         If Not validarDatos(cliente) Then
             LblMensaje.Text = "Por favor, complete todos los campos correctamente."
             LblMensaje.ForeColor = System.Drawing.Color.Red
             Return
         End If
-        Dim helper As New DatabaseHelper()
-        Dim query As String
-        Dim parametros As New List(Of SqlParameter)()
-        If String.IsNullOrEmpty(hfClienteId.Value) Then
-            ' Insertar nuevo cliente
-            query = "INSERT INTO Clientes (Nombre, Apellido, Telefono, Email) VALUES (@Nombre, @Apellido, @Telefono, @Email)"
-            parametros.Add(New SqlParameter("@Nombre", cliente.Nombre))
-            parametros.Add(New SqlParameter("@Apellido", cliente.Apellido))
-            parametros.Add(New SqlParameter("@Telefono", cliente.Telefono))
-            parametros.Add(New SqlParameter("@Email", cliente.Email))
-            LblMensaje.Text = "Cliente guardado exitosamente."
-            LblMensaje.ForeColor = System.Drawing.Color.Green
-        Else
-            ' Actualizar cliente existente
-            query = "UPDATE Clientes SET Nombre = @Nombre, Apellido = @Apellido, Telefono = @Telefono, Email = @Email WHERE ClienteID = @ClienteID"
-            parametros.Add(New SqlParameter("@ClienteID", Convert.ToInt32(hfClienteId.Value)))
-            parametros.Add(New SqlParameter("@Nombre", cliente.Nombre))
-            parametros.Add(New SqlParameter("@Apellido", cliente.Apellido))
-            parametros.Add(New SqlParameter("@Telefono", cliente.Telefono))
-            parametros.Add(New SqlParameter("@Email", cliente.Email))
-            LblMensaje.Text = "Cliente actualizado exitosamente."
-            LblMensaje.ForeColor = System.Drawing.Color.Green
-        End If
         Try
-            If helper.ExecuteNonQuery(query, parametros) Then
-                limpiarCampos()
-                GridView1.DataBind()
-                hfClienteId.Value = String.Empty
+            Dim exito As Boolean
+            If String.IsNullOrEmpty(hfClienteId.Value) Then
+                ' Agregar nuevo cliente
+                exito = repo.AgregarCliente(cliente)
+                If exito Then
+                    LblMensaje.Text = "Cliente agregado exitosamente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Green
+                Else
+                    LblMensaje.Text = "Error al agregar el cliente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Red
+                End If
             Else
-                LblMensaje.Text = "Error al guardar el cliente."
-                LblMensaje.ForeColor = System.Drawing.Color.Red
+                ' Actualizar cliente existente
+                cliente.ClienteID = Convert.ToInt32(hfClienteId.Value)
+                exito = repo.ActualizarCliente(cliente)
+                If exito Then
+                    LblMensaje.Text = "Cliente actualizado exitosamente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Green
+                Else
+                    LblMensaje.Text = "Error al actualizar el cliente."
+                    LblMensaje.ForeColor = System.Drawing.Color.Red
+                End If
             End If
+            limpiarCampos()
+            hfClienteId.Value = String.Empty
+            GridView1.DataBind()
         Catch ex As Exception
             LblMensaje.Text = "Error: " & ex.Message
             LblMensaje.ForeColor = System.Drawing.Color.Red
         End Try
+
 
     End Sub
     Private Function validarDatos(cliente As Clientes) As Boolean
@@ -96,34 +102,16 @@ Public Class Clientes1
     End Sub
 
     Protected Sub GridView1_RowDeleted(sender As Object, e As GridViewDeletedEventArgs)
-        Try
-            Dim helper As New DatabaseHelper()
-            Dim clienteId As Integer = Convert.ToInt32(e.Keys("ClienteID"))
-            Dim query As String = "DELETE FROM Clientes WHERE ClienteID = @ClienteID"
-            Dim parametros As New List(Of SqlParameter) From {
-                New SqlParameter("@ClienteID", e.Keys("ClienteID"))
-            }
-            ' Ejecutar la consulta para eliminar el cliente
-            If e.Exception IsNot Nothing Then
-                LblMensaje.Text = "Error al eliminar el cliente: " & e.Exception.Message
-                LblMensaje.ForeColor = System.Drawing.Color.Red
-                e.ExceptionHandled = True
-                Return
-            End If
-            If helper.ExecuteNonQuery(query, parametros) Then
-                LblMensaje.Text = "Cliente eliminado exitosamente."
-                LblMensaje.ForeColor = System.Drawing.Color.Green
-                GridView1.DataBind()
-            Else
-                LblMensaje.Text = "Error al eliminar el cliente."
-                LblMensaje.ForeColor = System.Drawing.Color.Red
-            End If
-        Catch ex As Exception
-
-        End Try
-
-
-
+        If e.Exception IsNot Nothing Then
+            LblMensaje.Text = "Error al eliminar el cliente: " & e.Exception.Message
+            LblMensaje.ForeColor = System.Drawing.Color.Red
+            e.ExceptionHandled = True
+        Else
+            LblMensaje.Text = "Cliente eliminado exitosamente."
+            LblMensaje.ForeColor = System.Drawing.Color.Green
+            limpiarCampos()
+        End If
+        GridView1.DataBind()
 
     End Sub
 
