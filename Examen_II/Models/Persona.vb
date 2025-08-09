@@ -9,6 +9,7 @@
         Return Email.Contains("@") AndAlso Email.Contains(".")
     End Function
 
+
     Public Function dtToPersona(dataTable As DataTable) As Persona
         If dataTable IsNot Nothing AndAlso dataTable.Rows.Count > 0 Then
             Dim row As DataRow = dataTable.Rows(0)

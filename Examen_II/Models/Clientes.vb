@@ -35,6 +35,13 @@
         Return Nothing
     End Function
 
+    Public Function ValidarTelefono() As Boolean
+        Return Not String.IsNullOrEmpty(Telefono) AndAlso Telefono.Length >= 10
+    End Function
+
+    Public Function ValidarDatos() As Boolean
+        Return Not String.IsNullOrEmpty(Nombre) AndAlso Not String.IsNullOrEmpty(Apellido) AndAlso ValidarTelefono() AndAlso ValidarEmail()
+    End Function
 
 
 
