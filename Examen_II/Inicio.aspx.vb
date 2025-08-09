@@ -60,21 +60,26 @@ Public Class Clientes1
         Return True
     End Function
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs)
-        Dim index As Integer = GridView1.SelectedIndex
-        Dim clienteId As Integer = Convert.ToInt32(GridView1.DataKeys(index).Value)
-        If index >= 0 Then
-            Dim cliente As New Clientes()
-            cliente.Id = clienteId
-            cliente.Nombre = GridView1.SelectedRow.Cells(1).Text
-            cliente.Apellido = GridView1.SelectedRow.Cells(2).Text
-            cliente.Telefono = GridView1.SelectedRow.Cells(3).Text
-            ' Aquí puedes hacer algo con el cliente seleccionado, como mostrar sus detalles o editarlo.
+        ' Obtener el ID del cliente seleccionado usando GridView1.SelectedDataKey
+        Dim clienteId As Integer = Convert.ToInt32(GridView1.SelectedDataKey("ClienteID"))
+        Dim helper As New DatabaseHelper()
+        Dim query As String = "SELECT * FROM Clientes WHERE ClienteID = @ClienteID"
+        Dim parametros As New List(Of SqlParameter) From {
+            New SqlParameter("@ClienteID", clienteId)
+        }
+        Dim dataTable As DataTable = helper.ExecuteQuery(query, parametros)
+        If dataTable.Rows.Count > 0 Then
+            ' Suponiendo que dtToCliente es un método de instancia, primero crea el objeto y luego llama al método
+            Dim clienteObj As New Clientes()
+            Dim cliente As Clientes = clienteObj.dtToCliente(dataTable)
             TxtNombreCliente.Text = cliente.Nombre
             TxtApellidoCliente.Text = cliente.Apellido
             TxtTelefono.Text = cliente.Telefono
-
+            txtEmail.Text = cliente.Email
+        Else
+            LblMensaje.Text = "Cliente no encontrado."
+            LblMensaje.ForeColor = System.Drawing.Color.Red
         End If
-
     End Sub
 
     Protected Sub GridView1_RowDeleted(sender As Object, e As GridViewDeletedEventArgs)

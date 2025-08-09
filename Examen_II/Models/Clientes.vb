@@ -20,20 +20,18 @@
         ' Constructor por defecto
     End Sub
     Public Function MostrarInformacion() As String
-        Return $"ID: {Id}, Nombre: {Nombre}, Apellido: {Apellido}, Email: {Email}, Telefono: {Telefono}, Direccion: {Direccion}, Fecha de Registro: {FechaRegistro.ToShortDateString()}"
+        Return $"ClienteID: {ClienteID}, Nombre: {Nombre}, Apellido: {Apellido}, Email: {Email}, Telefono: {Telefono}"
     End Function
 
     Public Function dtToCliente(dataTable As DataTable) As Clientes
         If dataTable IsNot Nothing AndAlso dataTable.Rows.Count > 0 Then
             Dim row As DataRow = dataTable.Rows(0)
             Return New Clientes() With {
-                .Id = Convert.ToInt32(row("Id")),
+                .ClienteID = Convert.ToInt32(row("ClienteID")),
                 .Nombre = Convert.ToString(row("Nombre")),
                 .Apellido = Convert.ToString(row("Apellido")),
                 .Email = Convert.ToString(row("Email")),
-                .Telefono = Convert.ToString(row("Telefono")),
-                .Direccion = Convert.ToString(row("Direccion")),
-                .FechaRegistro = Convert.ToDateTime(row("FechaRegistro"))
+                .Telefono = Convert.ToString(row("Telefono"))
             }
         End If
         Return Nothing

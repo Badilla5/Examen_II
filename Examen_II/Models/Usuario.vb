@@ -22,7 +22,7 @@
                 .Id = Convert.ToInt32(row("Id")),
                 .Nombre = Convert.ToString(row("Nombre")),
                 .Apellido = Convert.ToString(row("Apellido")),
-                .email = Convert.ToString(row("Email")),
+                .Email = Convert.ToString(row("Email")),
                 .Contraseña = Convert.ToString(row("Contraseña"))
             }
         End If

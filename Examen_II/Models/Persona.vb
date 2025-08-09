@@ -1,5 +1,5 @@
 ﻿Public Class Persona
-    Public Property Id As Integer
+    Public Property ClienteID As Integer
     Public Property Nombre As String
     Public Property Email As String
     Public Sub New()
@@ -21,7 +21,7 @@
         If dataTable IsNot Nothing AndAlso dataTable.Rows.Count > 0 Then
             Dim row As DataRow = dataTable.Rows(0)
             Return New Persona() With {
-                .Id = Convert.ToInt32(row("Id")),
+                .ClienteID = Convert.ToInt32(row("ClienteID")),
                 .Nombre = Convert.ToString(row("Nombre")),
                 .Email = Convert.ToString(row("Email"))
             }
