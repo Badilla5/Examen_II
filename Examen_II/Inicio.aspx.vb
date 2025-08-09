@@ -9,15 +9,24 @@ Public Class Clientes1
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        If Session("UsuarioId") Is Nothing Then
+
+            Response.Redirect("Login.aspx")
+        Else
+            ' Si hay sesión, mostrar el nombre del usuario
+            lblNombre.Text = "Bienvenido, " & Session("UsuarioNombre").ToString()
+
+
+        End If
     End Sub
     Protected Sub Page_Init(sender As Object, e As EventArgs) Handles Me.Init
         If Not IsPostBack Then
-            ' Inicializar el GridView o cualquier otro control necesario
             GridView1.DataBind()
         End If
     End Sub
 
     Protected Sub limpiarCampos()
+        ' Limpia los campos de texto y el mensaje
         TxtNombreCliente.Text = String.Empty
         TxtApellidoCliente.Text = String.Empty
         TxtTelefono.Text = String.Empty
@@ -26,6 +35,7 @@ Public Class Clientes1
     End Sub
 
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs)
+        ' Valida y guarda los datos del cliente
         Dim cliente As New Clientes() With {
             .Nombre = TxtNombreCliente.Text.Trim(),
             .Apellido = TxtApellidoCliente.Text.Trim(),
@@ -79,18 +89,11 @@ Public Class Clientes1
         Return True
     End Function
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs)
-        Dim clienteId As Integer = Convert.ToInt32(GridView1.SelectedDataKey("ClienteID"))
-        Dim helper As New DatabaseHelper()
-        Dim query As String = "SELECT * FROM Clientes WHERE ClienteID = @ClienteID"
-        Dim parametros As New List(Of SqlParameter) From {
-            New SqlParameter("@ClienteID", clienteId)
-        }
-        hfClienteId.Value = clienteId.ToString()
-        Dim dataTable As DataTable = helper.ExecuteQuery(query, parametros)
-        If dataTable.Rows.Count > 0 Then
-            hfClienteId.Value = clienteId.ToString()
-            Dim clienteObj As New Clientes()
-            Dim cliente As Clientes = clienteObj.dtToCliente(dataTable)
+        ' Carga los datos del cliente seleccionado en los campos de texto
+        Dim clienteId As Integer = Convert.ToInt32(GridView1.SelectedDataKey.Value)
+        Dim cliente As Clientes = repo.ObtenerClientePorId(clienteId)
+        If cliente IsNot Nothing Then
+            hfClienteId.Value = cliente.ClienteID.ToString()
             TxtNombreCliente.Text = cliente.Nombre
             TxtApellidoCliente.Text = cliente.Apellido
             TxtTelefono.Text = cliente.Telefono
@@ -99,9 +102,11 @@ Public Class Clientes1
             LblMensaje.Text = "Cliente no encontrado."
             LblMensaje.ForeColor = System.Drawing.Color.Red
         End If
+
     End Sub
 
     Protected Sub GridView1_RowDeleted(sender As Object, e As GridViewDeletedEventArgs)
+        ' Eliminael cliente seleccionado
         If e.Exception IsNot Nothing Then
             LblMensaje.Text = "Error al eliminar el cliente: " & e.Exception.Message
             LblMensaje.ForeColor = System.Drawing.Color.Red
@@ -116,6 +121,7 @@ Public Class Clientes1
     End Sub
 
     Protected Sub BtnCancelar_Click(sender As Object, e As EventArgs)
+        ' Limpia los campos y el mensaje
         limpiarCampos()
         LblMensaje.Text = String.Empty
         LblMensaje.ForeColor = System.Drawing.Color.Black

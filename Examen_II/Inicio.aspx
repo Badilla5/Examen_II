@@ -3,7 +3,7 @@
   <asp:HiddenField ID="hfClienteId" runat="server" />
      <div class="row mb-3">
         <div class="col-md-4">
-
+              <asp:Label ID="lblNombre" runat="server" Text=""></asp:Label>
          
 
             <div class="form-group mb-3">

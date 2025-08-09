@@ -23,7 +23,6 @@
             <asp:Button CssClass="btn btn-primary w-100 py-2" ID="btnLogin" runat="server" Text="Acceder" OnClick="btnLogin_Click" />
         </main>
     </div>
-    <a href="Registro.aspx">¿Primera vez que ingresa?</a>
     <asp:Label ID="lblError" runat="server" Text="" CssClass="alert alert-danger" Visible="false"></asp:Label>
 
 </asp:Content>

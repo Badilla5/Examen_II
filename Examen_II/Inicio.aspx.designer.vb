@@ -23,6 +23,15 @@ Partial Public Class Clientes1
     Protected WithEvents hfClienteId As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
+    '''Control lblNombre.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblNombre As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control TxtNombreCliente.
     '''</summary>
     '''<remarks>
