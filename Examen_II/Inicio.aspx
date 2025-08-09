@@ -1,7 +1,10 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Inicio.aspx.vb" Inherits="Examen_II.Clientes1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+  <asp:HiddenField ID="hfClienteId" runat="server" />
      <div class="row mb-3">
         <div class="col-md-4">
+
+         
 
             <div class="form-group mb-3">
                 <label for="NOmbre">Nombre </label>
@@ -18,7 +21,7 @@
                 <asp:TextBox  ID="TxtTelefono" CssClass="form-control" runat="server"></asp:TextBox>
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating  mb-3">
                 <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Email"></asp:TextBox>
                 <label for="MainContent_txtEmail">Email</label>
             </div>

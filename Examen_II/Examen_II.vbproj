@@ -227,6 +227,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\RouteConfig.vb" />
+    <Compile Include="Data\ClienteRepository.vb" />
     <Compile Include="Inicio.aspx.designer.vb">
       <DependentUpon>Inicio.aspx</DependentUpon>
     </Compile>

@@ -1,6 +1,5 @@
 ﻿Public Class Clientes
     Inherits Persona
-
     Public Property Apellido As String
     Public Property Telefono As String
     Public Property Direccion As String
@@ -11,6 +10,7 @@
     End Function
 
     Public Sub New(apellido As String, telefono As String, direccion As String, fechaRegistro As Date)
+        Me.ClienteID = 0
         Me.Apellido = apellido
         Me.Telefono = telefono
         Me.Direccion = direccion
