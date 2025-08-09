@@ -14,22 +14,22 @@ Option Explicit On
 Partial Public Class Clientes1
 
     '''<summary>
-    '''Control TxtNombreEmpresa.
+    '''Control TxtNombreCliente.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents TxtNombreEmpresa As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TxtNombreCliente As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''Control TxtContacto.
+    '''Control TxtApellidoCliente.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents TxtContacto As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TxtApellidoCliente As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''Control TxtTelefono.
@@ -57,4 +57,22 @@ Partial Public Class Clientes1
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents LblMensaje As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control GridView1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents GridView1 As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
+    '''Control SqlDataSource1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents SqlDataSource1 As Global.System.Web.UI.WebControls.SqlDataSource
 End Class
