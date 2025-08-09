@@ -3,7 +3,7 @@
     Public Property Nombre As String
     Public Property Apellido As String
     Public Property Contraseña As String
-    Public Property email As String
+    Public Property Email As String
 
     Public Sub New()
 
